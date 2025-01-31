@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated MCQs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .mcq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .pagination a {
+            padding: 8px 12px;
+            border: 1px solid #007bff;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .pagination a:hover, .pagination a.active {
+            background-color: #007bff;
+            color: white;
+        }
+        .home {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .home:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Generated MCQs</h1>
+    <div class="mcq-container">
+        <ul style="list-style: none;">
+            {% for mcq in mcqs %}
+            <li>
+                <pre>{
+    "title": "{{ mcq.title }}",
+    "description": "{{ mcq.description }}",
+    "question": "{{ mcq.question }}",
+    "options": {{ mcq.options | tojson }},
+    "correct_answer": "{{ mcq.correct_answer }}",
+    "explanation": "{{ mcq.explanation }}",
+    "link": "<a href='{{ mcq.link }}' target='_blank'>Read more</a>"
+}</pre>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('view_mcqs', page=page-1) }}">Previous</a>
+        {% endif %}
+
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('view_mcqs', page=p) }}" {% if p == page %}class="active"{% endif %}>{{ p }}</a>
+        {% endfor %}
+
+        {% if page < total_pages %}
+            <a href="{{ url_for('view_mcqs', page=page+1) }}">Next</a>
+        {% endif %}
+    </div>
+
+    <a href="/" class="home">Back to Home</a>
+
+</body>
+</html>
