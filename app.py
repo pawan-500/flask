@@ -16,8 +16,11 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 
+# MongoDB configuration
 MONGO_URI = os.getenv("MONGO_URI")
-
+client = MongoClient(MONGO_URI)
+db = client["rssfeed"]
+collection = db["mcqs"]
 # Define the agent
 agent = Agent(
     name="Web Crawl Tool",
@@ -93,10 +96,6 @@ def fetch_and_generate_mcqs_json(rss_urls):
 # Function to insert data into MongoDB
 def insert_mcqs_to_mongodb(mcqs):
     try:
-        client = MongoClient(MONGO_URI)
-        db = client["rssfeed"]
-        collection = db["mcqs"]
-
         if mcqs:
             result = collection.insert_many(mcqs)
             print(f"Inserted {len(result.inserted_ids)} documents into MongoDB.")
@@ -173,10 +172,6 @@ def view_mcqs():
         # Get the page number from the query parameters, default to 1 if not provided
         page = int(request.args.get('page', 1))
         per_page = 10  # Number of MCQs per page
-
-        client = MongoClient(MONGO_URI)
-        db = client["rssfeed"]
-        collection = db["mcqs"]
 
         # Calculate the number of documents to skip
         skip = (page - 1) * per_page
