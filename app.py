@@ -18,7 +18,6 @@ app = Flask(__name__)
 
 MONGO_URI = os.getenv("MONGO_URI")
 
-print(MONGO_URI)
 # Define the agent
 agent = Agent(
     name="Web Crawl Tool",
